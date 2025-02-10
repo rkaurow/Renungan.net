@@ -46,7 +46,7 @@ class _MoreMenuState extends State<MoreMenu> {
               builder: (context, snapshot) {
                 if (snapshot.hasError) {
                   return Center(
-                    child: Text('Error'),
+                    child: Text('Error Logic'),
                   );
                 }
                 if (snapshot.connectionState == ConnectionState.waiting) {
