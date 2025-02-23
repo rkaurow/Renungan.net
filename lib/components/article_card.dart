@@ -50,6 +50,25 @@ class ArticleCard extends StatelessWidget {
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(10),
                 child: Image.network(
+                  loadingBuilder: (BuildContext context, Widget child,
+                      ImageChunkEvent? loadingProgress) {
+                    // Jika loadingProgress ada (artinya gambar sedang dimuat)
+                    if (loadingProgress == null) {
+                      return child; // Menampilkan gambar setelah selesai dimuat
+                    } else {
+                      // Menampilkan indikator loading
+                      return Center(
+                        child: CircularProgressIndicator(
+                          value: loadingProgress.expectedTotalBytes != null
+                              ? loadingProgress.expectedTotalBytes != null
+                                  ? loadingProgress.cumulativeBytesLoaded /
+                                      (loadingProgress.expectedTotalBytes ?? 1)
+                                  : null
+                              : null,
+                        ),
+                      );
+                    }
+                  },
                   fit: BoxFit.cover,
                   linkgambar,
                 ),

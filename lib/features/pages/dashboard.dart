@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:task_sir_pandi/components/article_card.dart';
 import 'package:task_sir_pandi/const/constant.dart';
-import 'package:task_sir_pandi/pages/detail_article.dart';
-import 'package:task_sir_pandi/pages/more_menu.dart';
+import 'package:task_sir_pandi/features/bloc/bloc/renungan_bloc.dart';
+import 'package:task_sir_pandi/features/pages/detail_article.dart';
+import 'package:task_sir_pandi/features/pages/more_menu.dart';
 import 'package:task_sir_pandi/services/datasources/data_renungan_remote_datasources.dart';
 import 'package:task_sir_pandi/services/datasources/data_renungan_response_models.dart';
 
@@ -35,7 +37,7 @@ class _DashboardState extends State<Dashboard> {
 
   @override
   void initState() {
-    postfuture = dataRenunganRemoteDatasources.fetchData();
+    context.read<RenunganBloc>().add(RenunganEvent.fetchData());
     super.initState();
   }
 
@@ -120,55 +122,57 @@ class _DashboardState extends State<Dashboard> {
               SizedBox(
                 height: 10,
               ),
-              FutureBuilder(
-                future: postfuture,
-                builder: (context, snapshot) {
-                  if (snapshot.hasError) {
-                    return Center(
-                      child: Text('Error'),
-                    );
-                  }
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  }
-                  var posts = snapshot.data!;
-                  return SizedBox(
-                    height: tinggi(context) * 0.3,
-                    width: panjang(context),
-                    child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: 5,
-                      itemBuilder: (context, index) {
-                        var isi = posts[index];
-                        var judul = isi.title;
-                        var pict = isi.featuredImage;
-                        var author = isi.author;
-                        return ArticleCard(
-                          ontap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => DetailArticle(
-                                    excerpt: isi.excerpt,
-                                    kategori: isi.categories[0],
-                                    hari: isi.date.toString(),
-                                    kontenArtikel: isi.content,
-                                    namaPenulis: author.name,
-                                    judulArticle: isi.title,
-                                    assetavatar: author.avatar,
-                                    urlgambar: isi.featuredImage,
-                                  ),
-                                ));
+              BlocBuilder<RenunganBloc, RenunganState>(
+                builder: (context, state) {
+                  return state.maybeWhen(
+                    fetchData: (dataRenunganModels) {
+                      return SizedBox(
+                        height: tinggi(context) * 0.3,
+                        width: panjang(context),
+                        child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: 5,
+                          itemBuilder: (context, index) {
+                            var isi = dataRenunganModels[index];
+                            var judul = isi.title;
+                            var pict = isi.featuredImage;
+                            var author = isi.author;
+                            return ArticleCard(
+                              ontap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => DetailArticle(
+                                        excerpt: isi.excerpt,
+                                        kategori: isi.categories[0],
+                                        hari: isi.date.toString(),
+                                        kontenArtikel: isi.content,
+                                        namaPenulis: author.name,
+                                        judulArticle: isi.title,
+                                        assetavatar: author.avatar,
+                                        urlgambar: isi.featuredImage,
+                                      ),
+                                    ));
+                              },
+                              judul: judul,
+                              linkgambar: pict,
+                              author: author.name,
+                              date: isi.date,
+                            );
                           },
-                          judul: judul,
-                          linkgambar: pict,
-                          author: author.name,
-                          date: isi.date,
-                        );
-                      },
-                    ),
+                        ),
+                      );
+                    },
+                    loading: () {
+                      return Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    },
+                    orElse: () {
+                      return Center(
+                        child: Text('Loading'),
+                      );
+                    },
                   );
                 },
               ),

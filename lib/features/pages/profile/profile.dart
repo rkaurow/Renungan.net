@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:task_sir_pandi/components/profile_article_card.dart';
 import 'package:task_sir_pandi/const/constant.dart';
-import 'package:task_sir_pandi/pages/profile/edit_profile.dart';
-import 'package:task_sir_pandi/pages/settings/settings.dart';
+import 'package:task_sir_pandi/features/pages/profile/edit_profile.dart';
+import 'package:task_sir_pandi/features/pages/settings/settings.dart';
 
 class Profile extends StatefulWidget {
   const Profile({super.key});

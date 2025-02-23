@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:task_sir_pandi/pages/main_page.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:task_sir_pandi/features/bloc/bloc/renungan_bloc.dart';
+import 'package:task_sir_pandi/features/pages/main_page.dart';
+import 'package:task_sir_pandi/features/pages/onboarding_screen.dart';
+import 'package:task_sir_pandi/services/datasources/data_renungan_remote_datasources.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -12,13 +16,16 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'Flutter Demo',
-        theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-          useMaterial3: true,
-        ),
-        home: MainPage());
+    return BlocProvider(
+      create: (context) => RenunganBloc(DataRenunganRemoteDatasources()),
+      child: MaterialApp(
+          debugShowCheckedModeBanner: false,
+          title: 'Flutter Demo',
+          theme: ThemeData(
+            colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+            useMaterial3: true,
+          ),
+          home: MainPage()),
+    );
   }
 }

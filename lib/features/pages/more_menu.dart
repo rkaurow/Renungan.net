@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:task_sir_pandi/components/article_width_card.dart';
-import 'package:task_sir_pandi/pages/detail_article.dart';
+import 'package:task_sir_pandi/features/pages/detail_article.dart';
 import 'package:task_sir_pandi/services/datasources/data_renungan_remote_datasources.dart';
 import 'package:task_sir_pandi/services/datasources/data_renungan_response_models.dart';
 

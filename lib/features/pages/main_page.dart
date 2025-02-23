@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:task_sir_pandi/pages/dashboard.dart';
-import 'package:task_sir_pandi/pages/profile/profile.dart';
+import 'package:task_sir_pandi/features/pages/dashboard.dart';
+import 'package:task_sir_pandi/features/pages/profile/profile.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
